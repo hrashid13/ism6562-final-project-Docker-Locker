@@ -6,7 +6,7 @@
 - Gustavo Wengerkiewicz Storck
 - Hesham Rashid (hrashid13)
 - Savannah Day
-- Zachary Zambrana
+- Zachary Zambrana (ZacharyZambrana)
 
 ## Project Scenario
 **AgriFlow Farming** is a precision-agriculture company managing operations
