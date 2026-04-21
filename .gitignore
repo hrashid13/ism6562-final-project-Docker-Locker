@@ -1,0 +1,31 @@
+# Data files — too large for Git; download via data/README.md instructions
+data/agriflow-raw/
+data/*.gz
+data/*.csv
+data/*.json
+data/*.avro
+data/*.parquet
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+venv/
+
+# Docker volumes (if accidentally created in project dir)
+namenode_data/
+datanode*/
+
+# macOS
+.DS_Store
+.AppleDouble
+
+# IDE
+.idea/
+.vscode/
+*.swp
