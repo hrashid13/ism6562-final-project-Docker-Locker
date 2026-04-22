@@ -19,8 +19,6 @@
 #   Spark Master UI  → http://localhost:8080
 #   Jupyter          → http://localhost:8888?token=agriflow
 
-version: "3.9"
-
 services:
   namenode:
     image: tcsmith314/hadoop-namenode-python311:latest
