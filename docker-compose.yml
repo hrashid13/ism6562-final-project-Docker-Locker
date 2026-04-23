@@ -76,15 +76,23 @@ services:
       - namenode
       - datanode
 
-  spark-worker-1:
+    spark-worker-1:
     image: ism6562/spark-jovyan:3.5.0
     container_name: agriflow-spark-worker-1
     hostname: spark-worker-1
-    command: bash -lc "/usr/local/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077 --webui-port 8081"
+    command: >
+      bash -lc "mkdir -p /tmp/spark-work &&
+      /usr/local/spark/bin/spark-class
+      org.apache.spark.deploy.worker.Worker
+      --webui-port 8081
+      --work-dir /tmp/spark-work
+      spark://spark-master:7077"
     ports:
       - "8081:8081"
     environment:
       - PYSPARK_PYTHON=/opt/conda/bin/python3
+      - SPARK_WORKER_CORES=2
+      - SPARK_WORKER_MEMORY=2g
     volumes:
       - ./notebooks:/home/jovyan/notebooks
       - ./data:/home/jovyan/data
