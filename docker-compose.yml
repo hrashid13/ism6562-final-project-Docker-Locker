@@ -150,10 +150,96 @@ services:
       - agriflow-network
     depends_on:
       - zookeeper
+
+  postgres:
+    image: postgres:15
+    container_name: airflow-postgres
+    environment:
+      POSTGRES_DB: airflow
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - agriflow-network
+
+  airflow-init:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile.airflow
+    image: ism6562/airflow-spark:2.8.1
+    container_name: airflow-init
+    user: "1000:0"
+    entrypoint: /bin/bash
+    command:
+      - "-c"
+      - "airflow db migrate && airflow users create --username airflow --password airflow --firstname Admin --lastname User --role Admin --email admin@example.com || true"
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      HOME: /home/airflow
+    depends_on:
+      postgres:
+        condition: service_started
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./scripts:/opt/airflow/scripts
+      - airflow-logs:/opt/airflow/logs
+    networks:
+      - agriflow-network
+
+  airflow-webserver:
+    image: ism6562/airflow-spark:2.8.1
+    container_name: airflow-webserver
+    user: "1000:0"
+    command: airflow webserver
+    ports:
+      - "8081:8080"
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      HOME: /home/airflow
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./scripts:/opt/airflow/scripts
+      - ./data:/opt/airflow/data
+      - airflow-logs:/opt/airflow/logs
+    networks:
+      - agriflow-network
+
+  airflow-scheduler:
+    image: ism6562/airflow-spark:2.8.1
+    container_name: airflow-scheduler
+    user: "1000:0"
+    command: airflow scheduler
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      HOME: /home/airflow
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./scripts:/opt/airflow/scripts
+      - ./data:/opt/airflow/data
+      - airflow-logs:/opt/airflow/logs
+    networks:
+      - agriflow-network
   
 volumes:
   namenode_data:
   datanode_data:
+  postgres-data:
+  airflow-logs:
 
 networks:
   agriflow-network:
