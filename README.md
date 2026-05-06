@@ -156,7 +156,11 @@ All datasets are provided by the course. See `data/README.md`.
 
 ## Key Findings
 
-*(To be completed at project conclusion)*
+•	Yield Growth: Sensor-equipped fields outperformed baseline fields dramatically — reaching up to 213 bushels/acre versus the ~160 bushels/acre average, confirming that precision data infrastructure directly correlates with yield improvement.
+•	Water Waste: Approximately 12–15% of total irrigation water is wasted, attributable to post-rain irrigation events (8%), high-moisture over-irrigation (4–5%), and schedule drift.
+•	Crop Performance: Corn demonstrates the strongest revenue upside across all crops analyzed. October Midwest harvests consistently dominate the top revenue rows, including a single-region, single-month output of $4.13 million in October 2019.
+•	Equipment Efficiency: Harvesters consume the most fuel per hour (~10 gal/hr), while tractors log the most total operating hours, providing actionable signals for fleet optimization.
+
 
 ## Contributors
 
